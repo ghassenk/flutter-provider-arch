@@ -1,21 +1,18 @@
 import 'dart:io';
 
-import 'abstract_model.dart';
+import 'package:flutter/foundation.dart';
 
-class Login extends AbstractModel {
+class LoginModel extends ChangeNotifier {
   bool isLoading = false;
   bool isLoggedIn = false;
 
   void login(String user, String pwd) {
     isLoading = true;
-    onUpdate();
 
     bool result = checkCredentials(user, pwd);
     if (result != isLoggedIn) {
       isLoggedIn = result;
     }
-
-    onUpdate();
   }
 
   bool checkCredentials(String user, String pwd) {

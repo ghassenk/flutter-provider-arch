@@ -1,38 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/home_model.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
-
-  MyHomePage({Key? key, required this.home}) : super(key: key);
-  final Home home;
-
   @override
-  _MyHomePageState createState() => _MyHomePageState(/*homeState:homeState*/);
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  VoidCallback? stateCallback;
-
-  // TODO look for other ways to automate unregistering the callbacks
-  void _registerStateCallback(Home home) {
-    if (stateCallback != null) {
-      home.unregister(stateCallback!);
-    }
-    stateCallback = () {
-      setState(() {});
-    };
-    home.register(stateCallback!);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final Home home = widget.home;
-    _registerStateCallback(home);
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(home.title),
+        title: Consumer<HomeModel>(builder: (context, homeModel, child) {
+          return Text(homeModel.title);
+        }),
       ),
       body: Center(
         child: Column(
@@ -41,18 +23,23 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '${home.counter}',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            Consumer<HomeModel>(builder: (context, homeModel, child) {
+              return Text(
+                '${homeModel.counter}',
+                style: Theme.of(context).textTheme.headline4,
+              );
+            }),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: home.increment,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton:
+          Consumer<HomeModel>(builder: (context, homeModel, child) {
+        return FloatingActionButton(
+          onPressed: homeModel.increment,
+          tooltip: 'Increment',
+          child: Icon(Icons.add),
+        );
+      }),
     );
   }
 

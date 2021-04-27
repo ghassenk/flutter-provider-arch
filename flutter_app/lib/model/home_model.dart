@@ -1,13 +1,11 @@
-import 'abstract_model.dart';
+import 'package:flutter/foundation.dart';
 
-class Home extends AbstractModel {
-
+class HomeModel extends ChangeNotifier {
   final String title = 'Flutter Demo Home Page';
   int counter = 0;
 
   void increment() {
     counter++;
-    onUpdate();
+    notifyListeners();
   }
-
 }
